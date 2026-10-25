@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { body, param } from 'express-validator';
 import * as vehicleController from '../controllers/vehicle.controller.js';
+import * as inventoryController from '../controllers/inventory.controller.js';
 import { authenticate, authorizeRoles } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import { VEHICLE_CATEGORIES } from '../constants/vehicleCategories.js';
@@ -82,6 +83,25 @@ const idParamValidation = [
   validate,
 ];
 
+const purchaseValidationRules = [
+  ...idParamValidation,
+  body('quantity')
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage('Quantity must be an integer greater than or equal to 1'),
+  validate,
+];
+
+const restockValidationRules = [
+  ...idParamValidation,
+  body('quantity')
+    .notEmpty()
+    .withMessage('Quantity is required')
+    .isInt({ min: 1, max: 10000 })
+    .withMessage('Quantity must be an integer between 1 and 10000'),
+  validate,
+];
+
 // All vehicle endpoints require authentication
 router.use(authenticate);
 
@@ -98,6 +118,21 @@ router.get('/', vehicleController.getVehicles);
 
 // Search vehicles (MUST be declared before /:id)
 router.get('/search', vehicleController.searchVehicles);
+
+// Purchase vehicle (decrement stock)
+router.post(
+  '/:id/purchase',
+  purchaseValidationRules,
+  inventoryController.purchaseVehicle
+);
+
+// Restock vehicle (increment stock, Admin only)
+router.post(
+  '/:id/restock',
+  authorizeRoles('admin'),
+  restockValidationRules,
+  inventoryController.restockVehicle
+);
 
 // Get single vehicle by ID
 router.get('/:id', idParamValidation, vehicleController.getVehicleById);
