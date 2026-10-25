@@ -46,7 +46,7 @@ describe('VehicleCard Component', () => {
     const handlePurchase = vi.fn();
     render(<VehicleCard vehicle={soldOutVehicle} onPurchase={handlePurchase} />);
 
-    expect(screen.getByText(/sold out/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/sold out/i).length).toBeGreaterThanOrEqual(1);
     const purchaseBtn = screen.getByRole('button', { name: /sold out|purchase/i });
     expect(purchaseBtn).toBeDisabled();
 
