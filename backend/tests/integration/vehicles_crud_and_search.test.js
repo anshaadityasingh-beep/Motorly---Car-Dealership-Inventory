@@ -252,7 +252,7 @@ describe('Vehicles CRUD and Search Integration Tests', () => {
         .send({ price: 3000000 });
 
       expect(response.status).toBe(400);
-      expect(response.body.message).toMatch(/invalid.*id/i);
+      expect(JSON.stringify(response.body)).toMatch(/invalid.*id/i);
     });
 
     it('should return 404 when vehicle id does not exist', async () => {

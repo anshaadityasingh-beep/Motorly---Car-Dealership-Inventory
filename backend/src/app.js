@@ -5,6 +5,7 @@ import { config } from './config/env.js';
 import { notFound } from './middleware/notFound.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import authRoutes from './routes/auth.routes.js';
+import vehicleRoutes from './routes/vehicle.routes.js';
 
 const app = express();
 
@@ -49,6 +50,9 @@ app.get('/api/health', (req, res) => {
 
 // Auth Routes
 app.use('/api/auth', authRoutes);
+
+// Vehicles Routes
+app.use('/api/vehicles', vehicleRoutes);
 
 // 404 Handler for Unknown Routes
 app.use(notFound);
