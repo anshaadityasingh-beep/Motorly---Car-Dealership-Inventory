@@ -92,8 +92,8 @@ graph TD
 
 ### 1. Repository Clone
 ```bash
-git clone https://github.com/your-username/CarDealershipInventory_System.git
-cd CarDealershipInventory_System
+git clone https://github.com/anshaadityasingh-beep/Motorly---Car-Dealership-Inventory.git
+cd Motorly---Car-Dealership-Inventory
 ```
 
 ### 2. Backend Configuration & Startup
