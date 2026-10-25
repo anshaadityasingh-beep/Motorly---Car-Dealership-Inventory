@@ -18,7 +18,7 @@ describe('Search Query Builder Unit Tests', () => {
     });
 
     expect(query.make).toBeInstanceOf(RegExp);
-    expect(query.make.source).toBe('BMW\\ \\(Special\\)');
+    expect(query.make.source).toBe('BMW \\(Special\\)');
     expect(query.make.flags).toBe('i');
 
     expect(query.model).toBeInstanceOf(RegExp);
