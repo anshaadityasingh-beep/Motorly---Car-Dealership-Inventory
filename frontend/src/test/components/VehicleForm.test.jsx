@@ -38,7 +38,7 @@ describe('VehicleForm Component', () => {
     );
 
     expect(screen.getByLabelText(/make/i)).toHaveValue('Mercedes-Benz');
-    expect(screen.getByLabelText(/model/i)).toHaveValue('E-Class');
+    expect(screen.getByLabelText(/^model \*/i)).toHaveValue('E-Class');
     expect(screen.getByLabelText(/category/i)).toHaveValue('Sedan');
     expect(screen.getByLabelText(/price/i)).toHaveValue(7500000);
 
