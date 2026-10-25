@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import { config } from './config/env.js';
 import { notFound } from './middleware/notFound.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import authRoutes from './routes/auth.routes.js';
 
 const app = express();
 
@@ -45,6 +46,9 @@ app.get('/api/health', (req, res) => {
     environment: config.nodeEnv,
   });
 });
+
+// Auth Routes
+app.use('/api/auth', authRoutes);
 
 // 404 Handler for Unknown Routes
 app.use(notFound);
