@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { body } from 'express-validator';
 import * as authController from '../controllers/auth.controller.js';
 import { validate } from '../middleware/validate.js';
+import { authenticate, authorizeRoles } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -41,5 +42,11 @@ const loginValidation = [
 
 router.post('/register', registerValidation, authController.register);
 router.post('/login', loginValidation, authController.login);
+router.get('/me', authenticate, authController.getMe);
+
+// Admin-only test endpoint (useful for testing authorization)
+router.post('/test-admin-only', authenticate, authorizeRoles('admin'), (req, res) => {
+  res.status(200).json({ message: 'Admin access granted' });
+});
 
 export default router;
