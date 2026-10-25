@@ -75,3 +75,42 @@ export const getCurrentUser = async (userId) => {
   }
   return user.toJSON();
 };
+
+/**
+ * Seeds or updates an administrator account idempotently.
+ * @param {Object} adminData
+ * @param {string} [adminData.name='Admin']
+ * @param {string} adminData.email
+ * @param {string} adminData.password
+ * @returns {Promise<{user: Object, created: boolean, updated: boolean}>}
+ */
+export const seedAdminUser = async ({ name = 'Admin', email, password }) => {
+  const normalizedEmail = email.toLowerCase().trim();
+  let existingUser = await User.findOne({ email: normalizedEmail }).select('+password');
+
+  if (!existingUser) {
+    const newAdmin = await User.create({
+      name: name.trim(),
+      email: normalizedEmail,
+      password,
+      role: 'admin',
+    });
+    return {
+      user: newAdmin.toJSON(),
+      created: true,
+      updated: false,
+    };
+  }
+
+  // Update existing user to admin with new password
+  existingUser.name = name.trim();
+  existingUser.password = password;
+  existingUser.role = 'admin';
+  await existingUser.save();
+
+  return {
+    user: existingUser.toJSON(),
+    created: false,
+    updated: true,
+  };
+};
