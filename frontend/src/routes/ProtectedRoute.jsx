@@ -6,7 +6,7 @@ import { Spinner } from '../components/ui/Spinner';
 /**
  * Route guard that requires active authentication.
  */
-export const ProtectedRoute = () => {
+export const ProtectedRoute = ({ children }) => {
   const { user, isLoading } = useAuth();
   const location = useLocation();
 
@@ -22,5 +22,5 @@ export const ProtectedRoute = () => {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
-  return <Outlet />;
+  return children ? children : <Outlet />;
 };

@@ -6,7 +6,7 @@ import { Spinner } from '../components/ui/Spinner';
 /**
  * Route guard that requires admin role.
  */
-export const AdminRoute = () => {
+export const AdminRoute = ({ children }) => {
   const { user, isAdmin, isLoading } = useAuth();
 
   if (isLoading) {
@@ -25,5 +25,5 @@ export const AdminRoute = () => {
     return <Navigate to="/" replace />;
   }
 
-  return <Outlet />;
+  return children ? children : <Outlet />;
 };
