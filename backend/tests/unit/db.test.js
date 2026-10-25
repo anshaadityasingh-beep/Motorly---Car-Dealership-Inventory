@@ -24,15 +24,16 @@ describe('Database Connection Unit Tests', () => {
     expect(mongoose.connection.readyState).toBe(1); // 1 = connected
 
     const conn2 = await connectDB();
-    expect(conn2).toBe(conn1); // Returns cached instance
+    expect(conn2 === conn1).toBe(true); // Returns cached instance
   });
 
   it('should reset promise and rethrow error when connection fails', async () => {
-    // Clear cache
+    // Clear cache and ensure disconnected
     global.mongoose.conn = null;
     global.mongoose.promise = null;
+    await mongoose.disconnect();
 
-    config.mongoUri = 'mongodb://invalid-host-that-does-not-exist:27017/db';
+    config.mongoUri = 'mongodb://invalid-host-that-does-not-exist:27017/db?serverSelectionTimeoutMS=2000';
 
     await expect(connectDB()).rejects.toThrow();
     expect(global.mongoose.promise).toBeNull();
