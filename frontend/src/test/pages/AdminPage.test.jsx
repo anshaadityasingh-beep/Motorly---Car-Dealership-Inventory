@@ -86,8 +86,9 @@ describe('AdminPage Integration Tests', () => {
     await userEvent.click(deleteBtns[0]); // Click delete on first vehicle
 
     // Confirm dialog appears
-    expect(screen.getByText(/are you sure you want to delete/i)).toBeInTheDocument();
-    expect(screen.getByText(/Tesla Model S Plaid/i)).toBeInTheDocument();
+    expect(screen.getByText(/confirm deletion/i)).toBeInTheDocument();
+    expect(screen.getByText(/permanently delete/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Tesla Model S Plaid/i).length).toBe(2);
 
     const confirmBtn = screen.getByRole('button', { name: /confirm delete/i });
     await userEvent.click(confirmBtn);
